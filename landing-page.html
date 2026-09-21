@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#08090a">
+  <meta name="description" content="Mythra brings projects, tasks, resources, teams, and an AI workspace agent into one focused system.">
+  <title>Mythra — Work moves better together</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #08090a;
+      --surface: #0f1011;
+      --surface-2: #151617;
+      --surface-3: #191a1b;
+      --fg: #f7f8f8;
+      --fg-2: #d0d6e0;
+      --muted: #8a8f98;
+      --meta: #62666d;
+      --line: rgba(255,255,255,.06);
+      --brand: #8586ef;
+      --brand-soft: rgba(133,134,239,.13);
+      --font: "Inter Variable","Inter","SF Pro Display",-apple-system,system-ui,"Segoe UI",sans-serif;
+      --page: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--font);
+      font-feature-settings: "ss01","ss02","cv01","cv03";
+      -webkit-font-smoothing: antialiased;
+    }
+    button, a { font: inherit; }
+    a { color: inherit; text-decoration: none; }
+    button { color: inherit; }
+    .page { overflow: clip; }
+    .wrap { width: min(calc(100% - 48px), var(--page)); margin-inline: auto; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      height: 68px;
+      background: rgba(8,9,10,.78);
+      backdrop-filter: blur(18px) saturate(130%);
+      -webkit-backdrop-filter: blur(18px) saturate(130%);
+    }
+    .nav { height: 100%; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 620; letter-spacing: -.2px; }
+    .brand img { width: 30px; height: 30px; border-radius: 9px; }
+    .nav-links { display: flex; align-items: center; gap: 28px; color: var(--muted); font-size: 13px; font-weight: 510; }
+    .nav-links a:hover { color: var(--fg); }
+    .nav-actions { display: flex; align-items: center; gap: 8px; }
+    .button {
+      min-height: 42px;
+      padding: 0 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 560;
+      cursor: pointer;
+      transition: transform .18s ease, background .18s ease, color .18s ease;
+    }
+    .button:hover { transform: translateY(-1px); }
+    .button.primary { background: #e5e5e6; color: #08090a; }
+    .button.secondary { background: var(--surface); color: var(--fg-2); box-shadow: inset 0 0 0 1px var(--line); }
+    .button.ghost { padding-inline: 13px; color: var(--muted); background: transparent; }
+    .mobile-menu { display: none; width: 40px; height: 40px; border: 0; border-radius: 999px; background: var(--surface); }
+    .mobile-menu svg { width: 18px; }
+
+    .hero {
+      padding: 112px 0 70px;
+      text-align: center;
+      background: radial-gradient(ellipse 54% 30% at 50% 3%, rgba(133,134,239,.09), transparent 72%);
+    }
+    .eyebrow { margin-bottom: 24px; display: inline-flex; align-items: center; gap: 9px; color: var(--muted); font-size: 12px; font-weight: 510; }
+    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 5px var(--brand-soft); }
+    .hero h1 {
+      max-width: 850px;
+      margin: 0 auto;
+      font-size: clamp(48px, 7vw, 76px);
+      line-height: .99;
+      letter-spacing: -.055em;
+      font-weight: 540;
+      text-wrap: balance;
+    }
+    .hero-copy { max-width: 620px; margin: 28px auto 0; color: var(--muted); font-size: 17px; line-height: 1.6; text-wrap: balance; }
+    .hero-actions { margin-top: 32px; display: flex; justify-content: center; gap: 10px; }
+    .hero-note { margin-top: 15px; color: var(--meta); font-size: 11px; }
+
+    .product-shell {
+      position: relative;
+      width: min(calc(100% - 48px), 1240px);
+      margin: 0 auto 150px;
+      padding: 1px;
+      border-radius: 18px;
+      background: linear-gradient(140deg, rgba(255,255,255,.13), rgba(255,255,255,.025) 44%, rgba(133,134,239,.12));
+      box-shadow: 0 42px 100px rgba(0,0,0,.52);
+    }
+    .product {
+      height: 680px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 212px minmax(0,1fr) 318px;
+      border-radius: 17px;
+      background: #0b0c0d;
+    }
+    .product-sidebar { padding: 16px 12px; background: #0d0e0f; }
+    .workspace-switch { height: 42px; padding: 0 10px; display: flex; align-items: center; gap: 9px; border-radius: 9px; font-size: 12px; font-weight: 560; }
+    .workspace-mark { width: 23px; height: 23px; display: grid; place-items: center; border-radius: 7px; background: #1b1c20; color: var(--brand); font-size: 10px; font-weight: 700; }
+    .side-label { margin: 21px 10px 7px; color: var(--meta); font-size: 10px; font-weight: 560; }
+    .side-item { height: 34px; padding: 0 10px; display: flex; align-items: center; gap: 10px; border-radius: 8px; color: var(--muted); font-size: 12px; font-weight: 510; }
+    .side-item.active { background: #171819; color: var(--fg-2); }
+    .side-icon { width: 14px; height: 14px; opacity: .8; }
+    .side-count { margin-left: auto; color: var(--meta); font-size: 10px; }
+    .product-main { min-width: 0; padding: 23px 28px; background: #090a0b; }
+    .product-head { display: flex; align-items: center; justify-content: space-between; }
+    .product-title { font-size: 17px; font-weight: 590; letter-spacing: -.2px; }
+    .product-subtitle { margin-top: 5px; color: var(--meta); font-size: 11px; }
+    .new-task { width: 30px; height: 30px; border: 0; border-radius: 50%; background: var(--fg); color: var(--bg); font-size: 18px; }
+    .view-tabs { width: max-content; margin-top: 24px; padding: 3px; display: flex; gap: 2px; border-radius: 999px; background: #141516; }
+    .view-tab { height: 28px; padding: 0 12px; border: 0; border-radius: 999px; background: transparent; color: var(--muted); font-size: 10px; font-weight: 560; cursor: pointer; }
+    .view-tab.active { background: #222325; color: var(--fg); }
+    .task-section { margin-top: 24px; }
+    .task-section-head { height: 28px; display: flex; align-items: center; color: var(--muted); font-size: 10px; font-weight: 560; }
+    .task-section-head span:last-child { margin-left: auto; color: var(--meta); }
+    .task-row { min-height: 62px; display: grid; grid-template-columns: 22px minmax(0,1fr) auto; align-items: center; gap: 11px; }
+    .status-ring { width: 17px; height: 17px; border: 1.5px solid #777b84; border-radius: 50%; }
+    .status-ring.urgent { border-color: #e46262; }
+    .status-ring.brand { border-color: var(--brand); }
+    .task-name { overflow: hidden; color: var(--fg-2); font-size: 12px; font-weight: 580; text-overflow: ellipsis; white-space: nowrap; }
+    .task-meta { margin-top: 5px; display: flex; align-items: center; gap: 7px; color: var(--meta); font-size: 9px; }
+    .meta-pill { padding: 3px 7px; border-radius: 999px; background: #151619; }
+    .task-key { color: #4f535a; font-size: 9px; }
+    .project-panel { padding: 17px 14px; background: #0d0e0f; }
+    .agent-head { height: 37px; display: flex; align-items: center; justify-content: space-between; }
+    .agent-title { display: flex; align-items: center; gap: 9px; font-size: 12px; font-weight: 590; }
+    .agent-dot { width: 20px; height: 20px; display: grid; place-items: center; border-radius: 7px; background: var(--brand-soft); color: var(--brand); font-size: 9px; }
+    .agent-new { color: var(--meta); font-size: 16px; }
+    .agent-thread { padding: 20px 4px 0; }
+    .agent-label { display: flex; align-items: center; gap: 7px; color: var(--meta); font-size: 9px; font-weight: 560; }
+    .agent-label::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--brand); }
+    .agent-copy { margin-top: 13px; color: var(--fg-2); font-size: 11px; line-height: 1.55; }
+    .agent-card { margin-top: 13px; padding: 13px; border-radius: 10px; background: #151617; }
+    .agent-card strong { display: block; color: var(--fg); font-size: 11px; font-weight: 580; }
+    .agent-card span { display: block; margin-top: 5px; color: var(--meta); font-size: 9px; }
+    .agent-user { margin: 22px 0 0 auto; width: max-content; max-width: 90%; padding: 9px 11px; border-radius: 12px 12px 3px 12px; background: #1a1b1d; color: var(--fg-2); font-size: 10px; line-height: 1.45; }
+    .agent-composer { position: absolute; right: 14px; bottom: 14px; width: 290px; min-height: 88px; padding: 13px; border-radius: 14px; background: #18191a; box-shadow: inset 0 0 0 1px var(--line); color: var(--meta); font-size: 10px; }
+    .composer-row { margin-top: 30px; display: flex; justify-content: space-between; align-items: center; }
+    .composer-icons { display: flex; gap: 13px; font-size: 13px; }
+    .send { width: 27px; height: 27px; border: 0; border-radius: 50%; background: var(--fg); color: var(--bg); }
+
+    .section { padding: 0 0 150px; }
+    .section-head { max-width: 650px; }
+    .kicker { margin-bottom: 17px; color: var(--muted); font-size: 12px; font-weight: 560; }
+    .section h2 { margin: 0; font-size: clamp(34px,4vw,52px); line-height: 1.06; letter-spacing: -.045em; font-weight: 530; text-wrap: balance; }
+    .section-lead { max-width: 600px; margin: 20px 0 0; color: var(--muted); font-size: 15px; line-height: 1.65; }
+    .feature-grid { margin-top: 54px; display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .feature { min-height: 242px; padding: 26px; border-radius: 12px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line); }
+    .feature-icon { width: 33px; height: 33px; display: grid; place-items: center; border-radius: 9px; background: #18191a; color: var(--fg-2); }
+    .feature-icon svg { width: 17px; }
+    .feature h3 { margin: 70px 0 9px; color: var(--fg-2); font-size: 15px; font-weight: 580; letter-spacing: -.15px; }
+    .feature p { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+
+    .agent-section { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 80px; }
+    .agent-demo { min-height: 470px; padding: 26px; border-radius: 16px; background: var(--surface); box-shadow: inset 0 0 0 1px var(--line), 0 28px 75px rgba(0,0,0,.28); }
+    .demo-head { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 590; }
+    .demo-head img { width: 30px; height: 30px; border-radius: 9px; }
+    .prompt { margin: 34px 0 0 auto; width: 78%; padding: 13px 15px; border-radius: 15px 15px 4px 15px; background: #1a1b1d; color: var(--fg-2); font-size: 12px; line-height: 1.5; }
+    .agent-response { margin-top: 27px; }
+    .response-label { color: var(--muted); font-size: 10px; font-weight: 560; }
+    .response-copy { margin-top: 13px; color: var(--fg-2); font-size: 12px; line-height: 1.6; }
+    .created-task { margin-top: 16px; padding: 15px; display: grid; grid-template-columns: 20px 1fr; gap: 11px; border-radius: 11px; background: #18191a; }
+    .created-task strong { display: block; font-size: 12px; font-weight: 580; }
+    .created-task small { display: block; margin-top: 5px; color: var(--meta); font-size: 9px; }
+    .capability-list { margin: 30px 0 0; padding: 0; list-style: none; }
+    .capability-list li { padding: 11px 0; display: flex; gap: 10px; color: var(--fg-2); font-size: 13px; }
+    .capability-list li::before { content: "✓"; color: var(--brand); }
+
+    .workflow { margin-top: 54px; display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; overflow: hidden; border-radius: 12px; background: var(--line); box-shadow: inset 0 0 0 1px var(--line); }
+    .workflow-item { min-height: 210px; padding: 25px; background: var(--surface); }
+    .workflow-number { color: var(--meta); font: 10px ui-monospace,"SFMono-Regular",monospace; }
+    .workflow-item h3 { margin: 72px 0 8px; color: var(--fg-2); font-size: 14px; font-weight: 580; }
+    .workflow-item p { margin: 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+
+    .final-cta { padding-bottom: 110px; }
+    .cta-panel { padding: 84px 28px; border-radius: 16px; background: var(--surface); text-align: center; box-shadow: inset 0 0 0 1px var(--line); }
+    .cta-panel h2 { max-width: 700px; margin: 0 auto; font-size: clamp(36px,5vw,58px); line-height: 1.02; letter-spacing: -.05em; font-weight: 530; }
+    .cta-panel p { max-width: 520px; margin: 20px auto 28px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+    footer { padding: 26px 0 42px; color: var(--meta); font-size: 11px; }
+    .footer-row { display: flex; align-items: center; justify-content: space-between; }
+    .footer-links { display: flex; gap: 22px; }
+
+    @media (max-width: 980px) {
+      .product { grid-template-columns: 190px minmax(0,1fr); }
+      .project-panel { display: none; }
+      .feature-grid { grid-template-columns: 1fr 1fr; }
+      .agent-section { grid-template-columns: 1fr; gap: 45px; }
+      .agent-section .section-head { max-width: 720px; }
+      .workflow { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 700px) {
+      .wrap { width: min(calc(100% - 32px), var(--page)); }
+      .topbar { height: 60px; }
+      .nav-actions .button { display: none; }
+      .nav-actions .button.primary { display: inline-flex; min-height: 38px; padding-inline: 14px; }
+      .mobile-menu { display: grid; place-items: center; }
+      .hero { padding: 84px 0 48px; text-align: left; }
+      .hero h1 { font-size: clamp(43px,13vw,60px); }
+      .hero-copy { margin-left: 0; font-size: 15px; }
+      .hero-actions { justify-content: flex-start; flex-wrap: wrap; }
+      .hero-note { text-align: left; }
+      .product-shell { width: calc(100% - 24px); margin-bottom: 105px; }
+      .product { height: 555px; grid-template-columns: 1fr; }
+      .product-sidebar { display: none; }
+      .product-main { padding: 20px 18px; }
+      .task-row { min-height: 59px; }
+      .section { padding-bottom: 105px; }
+      .feature-grid, .workflow { grid-template-columns: 1fr; }
+      .feature { min-height: 205px; }
+      .feature h3 { margin-top: 44px; }
+      .workflow-item { min-height: 170px; }
+      .workflow-item h3 { margin-top: 45px; }
+      .agent-demo { min-height: 430px; padding: 20px; }
+      .cta-panel { padding: 62px 20px; }
+      .footer-row { align-items: flex-start; gap: 24px; flex-direction: column; }
+      .footer-links { flex-wrap: wrap; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *,*::before,*::after { transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header class="topbar">
+    <nav class="nav wrap" aria-label="Primary navigation">
+      <a class="brand" href="#top"><img src="../assets/mythra-icon-v1.png" alt=""><span>Mythra</span></a>
+      <div class="nav-links"><a href="#product">Product</a><a href="ai-agent.html">AI agent</a><a href="how-it-works.html">How it works</a><a href="pricing.html">Pricing</a></div>
+      <div class="nav-actions"><a class="button ghost" href="login.html">Log in</a><a class="button primary" href="signup.html">Get started</a><button class="mobile-menu" aria-label="Open navigation" id="menu"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 6h14M3 10h14M3 14h14"/></svg></button></div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>A calmer way to move work forward</div>
+      <h1>Your team’s work, finally in one place.</h1>
+      <p class="hero-copy">Plan projects, manage tasks, organize resources, and let an AI agent handle the busywork—without losing the context your team depends on.</p>
+      <div class="hero-actions"><a class="button primary" href="signup.html">Start building</a><a class="button secondary" href="#product">See how Mythra works</a></div>
+      <p class="hero-note">Built for focused teams. Clear enough for everyone.</p>
+    </section>
+
+    <section class="product-shell" id="product" aria-label="Mythra product preview">
+      <div class="product">
+        <aside class="product-sidebar">
+          <div class="workspace-switch"><span class="workspace-mark">M</span>Mythra Studio <span style="margin-left:auto;color:var(--meta)">⌄</span></div>
+          <div class="side-label">Workspace</div>
+          <div class="side-item"><svg class="side-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 4h14v12H3zM3 12h4l1.5 2h3L13 12h4"/></svg>Inbox<span class="side-count">4</span></div>
+          <div class="side-item active"><svg class="side-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><path d="m7 10 2 2 4-4"/></svg>Tasks<span class="side-count">18</span></div>
+          <div class="side-item"><svg class="side-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 6.5 7-3.5 7 3.5-7 3.5-7-3.5ZM3 11l7 3.5 7-3.5"/></svg>Projects</div>
+          <div class="side-item"><svg class="side-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h7l3 3v11H5zM12 3v4h4"/></svg>Resources</div>
+          <div class="side-label">Projects</div>
+          <div class="side-item"><span style="color:#e46262">◆</span>Mobile launch</div>
+          <div class="side-item"><span style="color:#8586ef">◆</span>Design system</div>
+          <div class="side-item"><span style="color:#6f9c82">◆</span>Customer research</div>
+        </aside>
+        <section class="product-main">
+          <div class="product-head"><div><div class="product-title" id="previewTitle">My tasks</div><div class="product-subtitle" id="previewSubtitle">Work assigned to you across every project</div></div><button class="new-task" aria-label="Create task">+</button></div>
+          <div class="view-tabs" role="tablist"><button class="view-tab active" data-view="tasks">Tasks</button><button class="view-tab" data-view="projects">Projects</button><button class="view-tab" data-view="resources">Resources</button></div>
+          <div id="previewRows">
+            <div class="task-section"><div class="task-section-head"><span>In progress</span><span>3</span></div>
+              <div class="task-row"><span class="status-ring brand"></span><div><div class="task-name">Review onboarding flow</div><div class="task-meta"><span class="meta-pill">High</span><span>Mobile launch</span><span>Today</span></div></div><span class="task-key">MYT-24</span></div>
+              <div class="task-row"><span class="status-ring urgent"></span><div><div class="task-name">Finalize client presentation</div><div class="task-meta"><span class="meta-pill">Urgent</span><span>Client rollout</span><span>Tomorrow</span></div></div><span class="task-key">MYT-19</span></div>
+              <div class="task-row"><span class="status-ring"></span><div><div class="task-name">Prepare Q4 research notes</div><div class="task-meta"><span class="meta-pill">Medium</span><span>Product research</span></div></div><span class="task-key">MYT-18</span></div>
+            </div>
+            <div class="task-section"><div class="task-section-head"><span>Backlog</span><span>2</span></div>
+              <div class="task-row"><span class="status-ring"></span><div><div class="task-name">Define launch success metrics</div><div class="task-meta"><span class="meta-pill">Medium</span><span>Mobile launch</span></div></div><span class="task-key">MYT-16</span></div>
+              <div class="task-row"><span class="status-ring"></span><div><div class="task-name">Organize product resources</div><div class="task-meta"><span class="meta-pill">Low</span><span>Operations</span></div></div><span class="task-key">MYT-11</span></div>
+            </div>
+          </div>
+        </section>
+        <aside class="project-panel">
+          <div class="agent-head"><div class="agent-title"><span class="agent-dot">M</span>Mythra Agent</div><span class="agent-new">＋</span></div>
+          <div class="agent-thread"><div class="agent-user">What needs my attention before launch?</div><div style="margin-top:25px"><div class="agent-label">Mythra</div><p class="agent-copy">Three items need attention. The presentation is overdue, and two launch tasks are still unassigned.</p><div class="agent-card"><strong>Finalize client presentation</strong><span>Urgent · Overdue · Client rollout</span></div><div class="agent-card"><strong>Review onboarding flow</strong><span>High · Due today · Assigned to you</span></div></div></div>
+          <div class="agent-composer">Ask Mythra…<div class="composer-row"><span class="composer-icons"><span>⌕</span><span>@</span></span><button class="send">↑</button></div></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section wrap">
+      <div class="section-head"><div class="kicker">Everything connected</div><h2>One system for the work your team actually does.</h2><p class="section-lead">Stop rebuilding context across five tools. Mythra keeps execution, knowledge, files, and collaboration together.</p></div>
+      <div class="feature-grid">
+        <article class="feature"><span class="feature-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="7"/><path d="m7 10 2 2 4-4"/></svg></span><h3>Tasks that stay clear</h3><p>Plan, assign, prioritize, schedule, and break work into actionable steps without adding process overhead.</p></article>
+        <article class="feature"><span class="feature-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m3 6.5 7-3.5 7 3.5-7 3.5-7-3.5ZM3 11l7 3.5 7-3.5"/></svg></span><h3>Projects with real context</h3><p>Connect tasks, people, and resources around the outcome—not around another complicated dashboard.</p></article>
+        <article class="feature"><span class="feature-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 3h7l3 3v11H5zM12 3v4h4"/></svg></span><h3>Resources teams can use</h3><p>Keep PDFs, documents, images, and spreadsheets organized and available where the work happens.</p></article>
+        <article class="feature"><span class="feature-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="3"/><circle cx="14" cy="8" r="2.5"/><path d="M2.5 16c.7-3 2.4-4.5 4.8-4.5s4.1 1.5 4.7 4.5M12 12c2.8 0 4.5 1.3 5 4"/></svg></span><h3>A workspace for the team</h3><p>Invite people, assign responsibility, and keep every contributor working from the same current picture.</p></article>
+        <article class="feature"><span class="feature-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m12.5 12.5 4 4"/></svg></span><h3>Search across everything</h3><p>Find the right task, project, teammate, or resource through keywords, context, and meaning.</p></article>
+        <article class="feature"><span class="feature-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2.5 12 7l4.5 2-4.5 2-2 4.5L8 11 3.5 9 8 7Z"/></svg></span><h3>An agent that takes action</h3><p>Ask Mythra to find work, create tasks, organize projects, and turn workspace context into the next clear step.</p></article>
+      </div>
+    </section>
+
+    <section class="section wrap agent-section" id="agent">
+      <div class="section-head"><div class="kicker">Mythra Agent</div><h2>Less asking around. More getting things done.</h2><p class="section-lead">The agent understands your workspace, finds the right context, and performs approved actions while keeping sensitive controls in your hands.</p><ul class="capability-list"><li>Find tasks and projects by meaning, not exact wording</li><li>Create and update work from a simple request</li><li>Connect tasks, projects, members, and resources</li><li>Answer product and workspace questions with context</li></ul></div>
+      <div class="agent-demo"><div class="demo-head"><img src="../assets/mythra-icon-v1.png" alt="">Mythra Agent</div><div class="prompt">Create a high-priority task for the launch checklist, assign Kenny, and add it to Mobile launch.</div><div class="agent-response"><div class="response-label">● &nbsp; Mythra</div><p class="response-copy">Done. I created the task, found Kenny in your workspace, and connected it to Mobile launch.</p><div class="created-task"><span class="status-ring brand"></span><div><strong>Complete launch checklist</strong><small>High · Kenny Egun · Mobile launch</small></div></div></div></div>
+    </section>
+
+    <section class="section wrap" id="workflow">
+      <div class="section-head"><div class="kicker">A cleaner operating rhythm</div><h2>From idea to shipped work, without the tool sprawl.</h2></div>
+      <div class="workflow"><article class="workflow-item"><span class="workflow-number">01</span><h3>Set up the workspace</h3><p>Bring your team into one focused environment with clear projects and responsibilities.</p></article><article class="workflow-item"><span class="workflow-number">02</span><h3>Capture the work</h3><p>Create tasks, add context, attach resources, and define what done looks like.</p></article><article class="workflow-item"><span class="workflow-number">03</span><h3>Move together</h3><p>Keep ownership, priorities, updates, and deadlines visible to everyone involved.</p></article><article class="workflow-item"><span class="workflow-number">04</span><h3>Let Mythra assist</h3><p>Use the agent to retrieve context and handle repeatable work while your team stays in control.</p></article></div>
+    </section>
+
+    <section class="final-cta wrap" id="pricing"><div class="cta-panel"><h2>Give your team one place to move work forward.</h2><p>Build projects, organize knowledge, and work with an agent that understands the whole workspace.</p><a class="button primary" href="signup.html">Create your workspace</a></div></section>
+  </main>
+
+  <footer><div class="footer-row wrap"><a class="brand" href="#top"><img src="../assets/mythra-icon-v1.png" alt=""><span>Mythra</span></a><div class="footer-links"><a href="#product">Product</a><a href="ai-agent.html">AI agent</a><a href="how-it-works.html">How it works</a><a href="pricing.html">Pricing</a><a href="terms-privacy.html">Privacy</a><a href="help-support.html">Support</a></div><span>© 2026 Mythra</span></div></footer>
+</div>
+<script>
+  const previewData = {
+    tasks: { title: "My tasks", subtitle: "Work assigned to you across every project", sections: [{ label: "In progress", items: [["Review onboarding flow","High · Mobile launch · Today","MYT-24","brand"],["Finalize client presentation","Urgent · Client rollout · Tomorrow","MYT-19","urgent"],["Prepare Q4 research notes","Medium · Product research","MYT-18",""]] },{ label: "Backlog", items: [["Define launch success metrics","Medium · Mobile launch","MYT-16",""]] }] },
+    projects: { title: "Projects", subtitle: "Every outcome your team is moving forward", sections: [{ label: "Active", items: [["Mobile launch","12 of 18 tasks · 67%","67%","brand"],["Design system","8 of 19 tasks · 42%","42%",""] ,["Customer research","3 of 12 tasks · 25%","25%",""]] }] },
+    resources: { title: "Resources", subtitle: "Files and knowledge shared across your workspace", sections: [{ label: "Recently updated", items: [["Product requirements.pdf","PDF · 2.4 MB · Mobile launch","PDF","brand"],["Research synthesis.docx","Word · 840 KB · Customer research","DOC",""] ,["Launch metrics.xlsx","Spreadsheet · 1.1 MB · Mobile launch","XLS",""]] }] }
+  };
+  function renderPreview(view) {
+    const data = previewData[view];
+    document.getElementById("previewTitle").textContent = data.title;
+    document.getElementById("previewSubtitle").textContent = data.subtitle;
+    document.getElementById("previewRows").innerHTML = data.sections.map(section => `<div class="task-section"><div class="task-section-head"><span>${section.label}</span><span>${section.items.length}</span></div>${section.items.map(item => `<div class="task-row"><span class="status-ring ${item[3]}"></span><div><div class="task-name">${item[0]}</div><div class="task-meta"><span>${item[1]}</span></div></div><span class="task-key">${item[2]}</span></div>`).join("")}</div>`).join("");
+  }
+  document.querySelectorAll(".view-tab").forEach(tab => tab.addEventListener("click", () => {
+    document.querySelectorAll(".view-tab").forEach(item => item.classList.remove("active"));
+    tab.classList.add("active"); renderPreview(tab.dataset.view);
+  }));
+  document.getElementById("menu").addEventListener("click", () => document.querySelector(".nav-links")?.classList.toggle("open"));
+</script>
+</body>
+</html>
